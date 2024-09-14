@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Movies Quiz</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif;
+            background-color: #38B6FF; /* Background color */
+            color: black;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        #yellow-box {
+            width: 200px;
+            height: 200px;
+            background-color: #FED405; /* Yellow color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border: 5px solid black; /* Black edging */
+            transition: transform 0.1s ease-in-out;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Keyframes for the bounce animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Class to trigger the bounce animation */
+        .animate-bounce {
+            animation: bounce 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="yellow-box">ANIMATED MOVIES</div>
+
+    <div id="question-answer"></div>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of animated movie trivia questions and answers
+        const animatedMoviesQuestions = [
+            { question: "What is the name of the toy cowboy in 'Toy Story'?", answer: "Woody" },
+            { question: "In 'Finding Nemo,' what type of fish is Nemo?", answer: "Clownfish" },
+            { question: "Who is the main character in 'The Lion King'?", answer: "Simba" },
+            { question: "In 'Frozen,' what is the name of the snowman who dreams of summer?", answer: "Olaf" },
+            { question: "What is the name of the fish that helps Marlin in 'Finding Nemo'?", answer: "Dory" },
+            { question: "Which animated film features a character named Buzz Lightyear?", answer: "Toy Story" },
+            { question: "In 'Beauty and the Beast,' what is Belle's father's name?", answer: "Maurice" },
+            { question: "In 'Up,' what is the name of the boy scout who befriends Carl Fredricksen?", answer: "Russell" },
+            { question: "What is the name of the rabbit who is the main character in 'Zootopia'?", answer: "Judy Hopps" },
+            { question: "In 'Moana,' what is the name of the demigod who helps Moana?", answer: "Maui" },
+            { question: "Who is the main villain in 'Despicable Me'?", answer: "Gru" },
+            { question: "In 'The Incredibles,' what is the name of the superhero family?", answer: "The Parr family" },
+            { question: "What type of animal is the main character in 'Kung Fu Panda'?", answer: "Panda" },
+            { question: "In 'Coco,' what is the name of the main character who dreams of becoming a musician?", answer: "Miguel" },
+            { question: "Who is the leader of the Minions in 'Despicable Me'?", answer: "Gru" },
+            { question: "In 'Moana,' what is the name of Moana's grandmother?", answer: "Gramma Tala" },
+            { question: "In 'Ratatouille,' what is the name of the rat who dreams of becoming a chef?", answer: "Remy" },
+            { question: "In 'WALL-E,' what is the name of the female robot that WALL-E falls in love with?", answer: "EVE" },
+            { question: "What is the name of the blue genie in 'Aladdin'?", answer: "Genie" },
+            { question: "In 'The Little Mermaid,' what is the name of Ariel's prince?", answer: "Prince Eric" },
+            { question: "Who is the main character in 'Mulan'?", answer: "Mulan" },
+            { question: "In 'Tangled,' what is the name of Rapunzel's pet chameleon?", answer: "Pascal" },
+            { question: "In 'Alice in Wonderland,' what is the name of the cat that can disappear and reappear at will?", answer: "Cheshire Cat" },
+            { question: "What is the name of the bear who loves honey in 'Winnie the Pooh'?", answer: "Winnie the Pooh" },
+            { question: "In 'Bambi,' what is the name of Bambi's best friend?", answer: "Thumper" },
+            { question: "In 'The Jungle Book,' what is the name of the bear who loves to eat honey?", answer: "Baloo" },
+            { question: "Who is the main antagonist in '101 Dalmatians'?", answer: "Cruella de Vil" },
+            { question: "In 'Tarzan,' what is the name of the gorilla who adopts Tarzan?", answer: "Kala" },
+            { question: "What is the name of the fish who is the main character in 'Finding Dory'?", answer: "Dory" },
+            { question: "In 'Peter Pan,' what is the name of the fairy who helps Peter Pan?", answer: "Tinker Bell" },
+            { question: "Who is the main character in 'The Lion King'?", answer: "Simba" },
+            { question: "In 'The Princess and the Frog,' what is the name of the princess who turns into a frog?", answer: "Tiana" },
+            { question: "In 'The Aristocats,' what is the name of the wealthy owner of Duchess and her kittens?", answer: "Madame Adelaide Bonfamille" },
+            { question: "In 'Mulan,' what is the name of Mulan's horse?", answer: "Khan" },
+            { question: "In 'The Rescuers,' what is the name of the mouse who is a member of the Rescue Aid Society?", answer: "Miss Bianca" },
+            { question: "In 'Pocahontas,' who is Pocahontas' love interest?", answer: "John Smith" },
+            { question: "What is the name of the character who is a cowboy doll in 'Toy Story'?", answer: "Woody" },
+            { question: "In 'A Bug's Life,' what is the name of the circus bugs that help Flik?", answer: "The Circus Bugs" },
+            { question: "In 'Monsters, Inc.,' what is the name of the child that Mike and Sulley find?", answer: "Boo" },
+            { question: "In 'Lilo & Stitch,' what is the name of the alien experiment that escapes?", answer: "Stitch" },
+            { question: "In 'Raya and the Last Dragon,' what is the name of the dragon who helps Raya?", answer: "Sisu" },
+            { question: "In 'Kubo and the Two Strings,' what is the name of Kubo's magical instrument?", answer: "The Shamisen" },
+            { question: "What is the name of the main character in 'How to Train Your Dragon'?", answer: "Hiccup" },
+            { question: "In 'The Incredibles,' what is the name of the superhero team?", answer: "The Incredibles" },
+            { question: "In 'The Good Dinosaur,' what is the name of the dinosaur who befriends Arlo?", answer: "Spot" },
+            { question: "In 'The Secret Life of Pets,' what is the name of the main character who is a terrier?", answer: "Max" },
+            { question: "In 'Zootopia,' what is the name of the fox who becomes friends with Judy Hopps?", answer: "Nick Wilde" },
+            { question: "In 'Big Hero 6,' what is the name of the inflatable robot?", answer: "Baymax" },
+            { question: "In 'The Lego Movie,' what is the name of the protagonist who is the 'special'?", answer: "Emmet Brickowski" }
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...animatedMoviesQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Bounce animation on click
+        yellowBox.addEventListener("click", () => {
+            yellowBox.classList.add("animate-bounce");
+            setTimeout(() => {
+                yellowBox.classList.remove("animate-bounce");
+            }, 300);
+
+            questionIndex = (questionIndex + 1) % shuffledQuestions.length;
+            displayQuestion();
+        });
+
+        // Initialize questions on page load
+        window.onload = initializeQuestions;
+    </script>
+
+</body>
+</html>
